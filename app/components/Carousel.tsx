@@ -1,69 +1,41 @@
-
 "use client";
 
-import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay } from "swiper/modules";
-
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-import { slideData } from "../data/dataCarousel";
-import BlogCard from "./BlogCard";
+import { slideImages } from "../data/dataCarousel";
 
 export default function Carousel() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
-    <section className="min-h-screen bg-[#f7f8fa] px-5 py-10 fundo">
-      <div className="mx-auto max-w-5xl">
-        <header className="mb-9 text-center">
-          <h1 className="text-3xl font-normal text-[#222]">
-            Blog
-          </h1>
-
-          <p className="mt-3 text-sm text-gray-600">
-            Stay tuned and updated by the latest updates from our blog.
-          </p>
-
-          <div className="mx-auto mt-7 h-px w-44 bg-gray-200" />
-        </header>
-
-        {mounted && (
-          <Swiper
-            modules={[Pagination, Autoplay]}
-            pagination={{ clickable: true }}
-            autoplay={{
-              delay: 4000,
-              disableOnInteraction: false,
-            }}
-            loop
-            spaceBetween={24}
-            slidesPerView={1}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              768: { slidesPerView: 3 },
-            }}
-            className="blog-swiper !pb-12"
-          >
-            {slideData.map((slide) => (
-              <SwiperSlide key={slide.id}>
-                <BlogCard
-                  category={slide.category}
-                  title={slide.title}
-                  date={slide.date}
-                  comments={slide.comments}
-                  image={slide.image}
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        )}
-      </div>
-    </section>
+    <div className="w-1/2 mx-auto py-6">
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        slidesPerView={1} // Mostra apenas 1 slide por vez
+        spaceBetween={30}
+        centeredSlides={true} // Centraliza o slide ativo
+        loop={true}
+        pagination={{ clickable: true }}
+        navigation
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
+        className="rounded-2xl"
+      >
+        {slideImages.map((image) => (
+          <SwiperSlide key={image.id}>
+            <img
+              src={image.src}
+              alt={image.alt}
+              width={1000} // Largura original da imagem para otimização
+              height={600} // Altura original da imagem para otimização
+              className="block w-full h-auto rounded-lg object-cover"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 }
